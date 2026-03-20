@@ -10,13 +10,13 @@ The `ebay-dl.py` file scrapes data from eBay and creates a .json file as the def
 
 To run the `ebay-dl.py` file, first enter the following lines in your terminal:
 ```
-$ cd webscraping-ebay  # to cd into your directory
-$ pip3 install argparse requests playwright bs4  # to install the required modules
-$ playwright install  # to use submodule
+$ cd webscraping-ebay
+$ pip3 install argparse requests playwright bs4
+$ playwright install
 ```
 Then, execute the code with your search term:
 ```
-$ python3 ebay-dl.py '<search term>' --csv --json  # outputs both .csv and .json files for your search term
+$ python3 ebay-dl.py '<search term>' --csv --json
 ```
 
 Find the CSCI040 project instructions here: https://github.com/mikeizbicki/cmc-csci040/tree/2026spring/project_02_webscraping
