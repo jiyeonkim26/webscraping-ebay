@@ -11,12 +11,17 @@ import csv
 def download_html_and_run_javascript(url):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
-        page = browser.new_page()
-        page.goto(url)
-        page.wait_for_load_state("networkidle")
-        html = page.content()
-        browser.close()
-    return html
+        context = browser.new_context(
+            user_agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36"
+        )
+        page = context.new_page()
+        try:
+            page.goto(url, timeout=60000)
+            page.wait_for_selector('li.s-card', timeout=10000)
+            page.wait_for_timeout(2000)
+            return page.content()
+        except:
+            return None
 
 def parse_itemssold(s):
     '''
@@ -110,7 +115,6 @@ if __name__ == '__main__':
         # loop over the items in the page
         tags_items = soup.select('li.s-card')
         print('len(tags_items)=', len(tags_items))
-        item = []
 
         for tag_item in tags_items:
 
@@ -157,32 +161,32 @@ if __name__ == '__main__':
 
             items.append(item)
 
-        filename = args.search_term.replace(" ", "_")
+    filename = args.search_term.replace(" ", "_")
 
-        # JSON output
-        if args.json:
-            filename_json = filename + ".json"
-            with open(filename_json, "w", encoding='utf-8') as f:
-                json.dump(items, f, indent=4)
-            print(f"{len(items)} items saved to {filename_json}")
+    # JSON output
+    if args.json:
+        filename_json = filename + ".json"
+        with open(filename_json, "w", encoding='utf-8') as f:
+            json.dump(items, f, indent=4)
+        print(f"{len(items)} items saved to {filename_json}")
 
-        # CSV output
-        if args.csv:
-            filename_csv = filename + ".csv"
-            with open(filename_csv, "w", newline="", encoding="utf-8") as f:
-                writer = csv.DictWriter(f, fieldnames=[
-                    'name',
-                    'status',
-                    'price',
-                    'items_sold',
-                    'free_returns',
-                    'shipping'
-                ])
-                writer.writeheader()
-                writer.writerows(items)
+    # CSV output
+    if args.csv:
+        filename_csv = filename + ".csv"
+        with open(filename_csv, "w", newline="", encoding="utf-8") as f:
+            writer = csv.DictWriter(f, fieldnames=[
+                'name',
+                'status',
+                'price',
+                'items_sold',
+                'free_returns',
+                'shipping'
+            ])
+            writer.writeheader()
+            writer.writerows(items)
 
-            print(f"{len(items)} items saved to {filename_csv}")
+        print(f"{len(items)} items saved to {filename_csv}")
 
-        if not args.json and not args.csv:
-            args.json = True
+    if not args.json and not args.csv:
+        args.json = True
 
