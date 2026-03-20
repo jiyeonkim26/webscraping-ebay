@@ -1,3 +1,4 @@
+
 import argparse
 import requests
 import playwright
@@ -184,3 +185,4 @@ if __name__ == '__main__':
 
         if not args.json and not args.csv:
             args.json = True
+
