@@ -24,6 +24,6 @@ $ python3 ebay-dl.py 'kitchenaid mixer' --csv --json
 $ python3 ebay-dl.py 'apple watch' --csv --json
 $ python3 ebay-dl.py 'teddy bear' --csv --json
 ```
-This will give you  .csv and .json file outputs included in this repository.
+This will give you the same .csv and .json file outputs included in this repository.
 
 Find the CSCI040 project instructions here: https://github.com/mikeizbicki/cmc-csci040/tree/2026spring/project_02_webscraping
