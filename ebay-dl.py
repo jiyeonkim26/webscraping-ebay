@@ -1,13 +1,13 @@
 
 import argparse
-import requests
-import playwright
 from playwright.sync_api import sync_playwright
 from bs4 import BeautifulSoup
 import json
 import csv
 
 # downloads the browser and runs the html
+
+
 def download_html_and_run_javascript(url):
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
@@ -20,8 +20,9 @@ def download_html_and_run_javascript(url):
             page.wait_for_selector('li.s-card', timeout=10000)
             page.wait_for_timeout(2000)
             return page.content()
-        except:
+        except Exception:
             return None
+
 
 def parse_itemssold(s):
     '''
@@ -44,10 +45,12 @@ def parse_itemssold(s):
     else:
         return 0
 
+
 def parse_shipping(text):
     '''
-    Takes as input strings and returns the price of shipping the item in cents,
-    stored as an integer; if the item has free shipping, then this value should be 0.
+    Takes as input strings and returns the price of shipping the
+    item in cents, stored as an integer; if the item has free
+    shipping, then this value should be 0.
 
     >>> parse_shipping('+$17.55 delivery')
     17.55
@@ -76,12 +79,14 @@ def parse_shipping(text):
             return int(float(number) * 100)
 
     elif 'free delivery' in text:
-            return 0
+        return 0
 
     return 0
 
 # this if statement says only run the code below when the python file
 # is run 'normally' where normally means not in the doctests
+
+
 if __name__ == '__main__':
 
     # gets the command line arguments
@@ -189,4 +194,3 @@ if __name__ == '__main__':
 
     if not args.json and not args.csv:
         args.json = True
-
